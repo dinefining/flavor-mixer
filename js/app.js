@@ -502,7 +502,7 @@ const infoBox = document.getElementById("info-box");
 infoBox.innerHTML = `
   <button type="button" class="info-x" aria-label="Close">${X_SVG}</button>
   <p class="info-title">Flavor Mixer</p>
-  <p>Make 5000+ pairings from 400+ flavors across 20 families.</p>
+  <p>Explore potential cocktail pairings across 400+ flavors and 20 families.</p>
   <p><span class="key-c">Bright</span> flavors indicate classic pairings. <span class="key-g">Dim</span> ones work okay. <span class="key-m">Dimmer</span> ones are a maybe.</p>
   <p>Flavors appearing in ‘saved’ ideas will be marked with a <span class="key-c">▪</span></p>
   <p>Click the top of any column to search it, by flavor or by family.</p>
