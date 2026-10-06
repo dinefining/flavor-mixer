@@ -473,6 +473,7 @@ function renderPanel() {
   const focused = a && a.id && (a.id.startsWith("lab-note") || a.id === "lab-own") ? { id: a.id, pos: a.selectionStart } : null;
   if (s.length < 2) {
     panel.innerHTML = `${panelPin(s)}${labIndex()}`;
+    if (typeof growFields === "function") growFields();
     keepFocus(focused);
     return;
   }
@@ -485,6 +486,7 @@ function renderPanel() {
     ${panelPin(s)}
     <div class="sec"><h2>PAIRING NOTES</h2>${notes.map(n => "<p>" + esc(n) + "</p>").join("")}</div>
     <div class="sec"><h2>COCKTAIL IDEAS</h2>${ideas.map((i, k) => ideaHTML(k, i)).join("")}${ownIdeaRow()}</div>`;
+  if (typeof growFields === "function") growFields();
   keepFocus(focused);
 }
 
@@ -505,14 +507,38 @@ infoBox.innerHTML = `
   <p>Flavors appearing in ‘saved’ ideas will be marked with a <span class="key-c">▪</span></p>
   <p>Click the top of any column to search it, by flavor or by family.</p>
   <p>A <a href="https://ravipopat.info/maybe-machines" target="_blank" rel="noopener">maybe machine</a> by <a href="https://ravipopat.info" target="_blank" rel="noopener">Ravi Popat</a>.</p>`;
-function setInfo(open) { infoBox.hidden = !open; infoBtn.setAttribute("aria-expanded", String(open)); }
+// on phones the box has a fixed height, so the text grows until it fills it
+function fitInfo() {
+  if (infoBox.hidden) return;
+  infoBox.style.fontSize = ""; infoBox.style.lineHeight = "";
+  if (!matchMedia("(max-width: 760px)").matches) return;
+  let lo = 14, hi = 34;
+  while (hi - lo > 0.1) {
+    const mid = (lo + hi) / 2;
+    infoBox.style.fontSize = mid + "px";
+    if (infoBox.scrollHeight <= infoBox.clientHeight) lo = mid; else hi = mid;
+  }
+  infoBox.style.fontSize = lo + "px";
+  // a bigger size would wrap onto another line, so spread what's left over the line spacing instead
+  const lh = parseFloat(getComputedStyle(infoBox).lineHeight);
+  const lines = [...infoBox.querySelectorAll("p")].reduce((a, p) => a + Math.round(p.offsetHeight / lh), 0);
+  const gap = infoBox.clientHeight - contentBottom();
+  if (lines && gap > 1) infoBox.style.lineHeight = Math.min(lh * 1.35, lh + gap / lines) + "px";
+}
+function contentBottom() {
+  const last = infoBox.querySelector("p:last-of-type");
+  const cs = getComputedStyle(infoBox);
+  return last.offsetTop + last.offsetHeight + parseFloat(cs.paddingBottom);
+}
+function setInfo(open) { infoBox.hidden = !open; infoBtn.setAttribute("aria-expanded", String(open)); if (open) fitInfo(); }
+addEventListener("resize", fitInfo);
 infoBox.querySelector(".info-x").addEventListener("click", e => { e.stopPropagation(); setInfo(false); infoBtn.focus(); });
 infoBtn.addEventListener("click", e => { e.stopPropagation(); setInfo(infoBox.hidden); });
 document.addEventListener("click", e => { if (!infoBox.hidden && !infoBox.contains(e.target)) setInfo(false); });
 document.addEventListener("keydown", e => {
   if (e.key !== "Escape") return;
   if (!infoBox.hidden) { setInfo(false); return; }
-  if (e.target && e.target.tagName === "INPUT") { e.target.blur(); return; }
+  if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) { e.target.blur(); return; }
   clearAll();
 });
 // marquee on hover, only when the text is cut off

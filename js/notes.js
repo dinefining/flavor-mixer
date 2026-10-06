@@ -86,7 +86,7 @@ function ideaHTML(k, idea) {
       ${LAB.ready ? `<div class="idea-notes">
         ${notesList(g)}
         ${open
-          ? `<span class="field"><input id="lab-note-${k}" data-k="${k}" class="log-input" type="text" maxlength="280" placeholder="${LAB.saving[k] ? "saving…" : "note"}" value="${esc(LAB.drafts[k] || "")}"><span class="enter" aria-hidden="true"><svg viewBox="0 0 16 16" width="15" height="15"><path d="M13 3v5.5H3.5M6.5 5.5l-3 3 3 3" fill="none" stroke="currentColor" stroke-width=".75" stroke-linecap="square"/></svg></span></span>`
+          ? `<span class="field"><textarea id="lab-note-${k}" data-k="${k}" class="log-input" rows="1" maxlength="280" placeholder="${LAB.saving[k] ? "saving…" : "note"}">${esc(LAB.drafts[k] || "")}</textarea><span class="enter" aria-hidden="true"><svg viewBox="0 0 16 16" width="15" height="15"><path d="M13 3v5.5H3.5M6.5 5.5l-3 3 3 3" fill="none" stroke="currentColor" stroke-width=".75" stroke-linecap="square"/></svg></span></span>`
           : `<button type="button" class="add" data-open="${k}">+ note</button>`}
         ${LAB.status[k] ? `<span class="why">${esc(LAB.status[k])}</span>` : ""}
       </div>` : ""}
@@ -108,7 +108,7 @@ function groupHTML(g, withCombo) {
 function ownIdeaRow() {
   if (!LAB.ready) return "";
   return `<div class="own-row">${LAB.ownOpen
-    ? `<span class="field"><input id="lab-own" class="log-input" type="text" maxlength="200" placeholder="your own idea" value="${esc(LAB.own || "")}"><span class="enter" aria-hidden="true"><svg viewBox="0 0 16 16" width="15" height="15"><path d="M13 3v5.5H3.5M6.5 5.5l-3 3 3 3" fill="none" stroke="currentColor" stroke-width=".75" stroke-linecap="square"/></svg></span></span>`
+    ? `<span class="field"><textarea id="lab-own" class="log-input" rows="1" maxlength="200" placeholder="your own idea">${esc(LAB.own || "")}</textarea><span class="enter" aria-hidden="true"><svg viewBox="0 0 16 16" width="15" height="15"><path d="M13 3v5.5H3.5M6.5 5.5l-3 3 3 3" fill="none" stroke="currentColor" stroke-width=".75" stroke-linecap="square"/></svg></span></span>`
     : `<button type="button" class="add" data-own="1">+ your own idea</button>`}</div>`;
 }
 async function saveOwn() {
@@ -193,7 +193,11 @@ panel.addEventListener("click", ev => {
   else if (d.del) labDelete(d.del);
   else if (d.load) labLoad(d.load);
 });
+// note fields wrap and grow a row at a time instead of scrolling sideways
+function growField(el) { el.style.height = "auto"; el.style.height = el.scrollHeight + "px"; }
+function growFields() { panel.querySelectorAll("textarea.log-input").forEach(growField); }
 panel.addEventListener("input", ev => {
+  if (ev.target.matches && ev.target.matches("textarea.log-input")) growField(ev.target);
   if (ev.target.id === "lab-own") LAB.own = ev.target.value;
   else if (ev.target.dataset.k !== undefined) LAB.drafts[+ev.target.dataset.k] = ev.target.value;
 });
@@ -205,7 +209,8 @@ panel.addEventListener("focusout", ev => {
   }, 120);
 });
 panel.addEventListener("keydown", ev => {
-  if (ev.key !== "Enter") return;
+  if (ev.key !== "Enter" || ev.shiftKey || ev.isComposing) return;
+  if (ev.target.matches && ev.target.matches("textarea.log-input")) ev.preventDefault();   // Enter saves, it doesn't add a line
   if (ev.target.id === "lab-own") saveOwn();
   else if (ev.target.dataset.k !== undefined) labSave(+ev.target.dataset.k);
 });

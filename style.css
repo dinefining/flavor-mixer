@@ -106,7 +106,7 @@ button.item.classic { color: var(--fg); font-weight: 500; }
 button.item.good { color: var(--mid); }
 button.item.maybe { color: #5a5a56; }
 button.item.maybe[aria-pressed="true"] { color: var(--inv-fg); }
-.key-m { color: #6a6a64; }
+.key-m { color: #6a6a64; opacity: 0.6;}
 button.item.classic[aria-pressed="true"], button.item.good[aria-pressed="true"] { color: var(--inv-fg); }
 button.info {
   all: unset; position: fixed; z-index: 3; cursor: pointer;
@@ -115,31 +115,33 @@ button.info {
   border: 1px solid var(--faint); color: var(--dim); background: var(--bg);
   font: 500 13px/1 var(--mono);
 }
-button.info:hover, button.info[aria-expanded="true"] { color: var(--fg); border-color: var(--dim); }
+button.info:hover { color: var(--fg); border-color: var(--dim); }
+button.info[aria-expanded="true"] { background: #d9a441; border-color: #d9a441; color: #0a0a0a; } /* open = amber with a black i */
 button.info:focus-visible { outline: 1px solid var(--fg); outline-offset: 2px; }
-/* info: a large centred box with bigger text and a square close button in its corner */
+/* info: a large centred box; padding matches the flavor columns (16px, 8px on phones);
+   amber close square in the inside top-right corner, same size as the i button */
 .info-box {
   position: fixed; z-index: 4; left: 50%; top: 50%; transform: translate(-50%, -50%);
-  box-sizing: border-box; width: min(640px, calc(100vw - 64px)); max-height: calc(100vh - 64px); overflow-y: auto;
-  padding: 32px; background: #0a0a0a; border: 1px solid var(--faint); color: var(--dim);
-  font-size: 18px; line-height: 1.55;
+  box-sizing: border-box; width: min(680px, calc(100vw - 64px)); max-height: calc(100vh - 64px); overflow-y: auto;
+  padding: 10px 16px; background: #0a0a0a; border: 1px solid var(--faint); color: var(--dim);
+  font-size: 20px; line-height: 1.55;
 }
-.info-box p { margin: 0 0 1.2em; }
-.info-box .info-title { padding-right: 32px; }
+.info-box p { margin: 0 0 1.1em; }
+.info-box .info-title { padding-right: 36px; }
 .info-box p:last-of-type { margin-bottom: 0; }
 .info-box .info-x {
-  all: unset; box-sizing: border-box; cursor: pointer; position: absolute; top: 10px; right: 10px;
-  width: 30px; height: 30px; display: grid; place-items: center; background: #333331; color: #d8d8d4;
+  all: unset; box-sizing: border-box; cursor: pointer; position: absolute; top: 0; right: 0;
+  width: 26px; height: 26px; display: grid; place-items: center; background: #d9a441; color: #0a0a0a;
 }
-.info-box .info-x svg { width: 12px; height: 12px; display: block; }
-.info-box .info-x:hover { background: #454543; }
-.info-box .info-x:focus-visible { outline: 1px solid var(--fg); outline-offset: -3px; }
+.info-box .info-x svg { width: 11px; height: 11px; display: block; }
+.info-box .info-x:hover { background: #e6b65a; }
+.info-box .info-x:focus-visible { outline: 1px solid var(--fg); outline-offset: 2px; }
 .info-box .info-title { color: var(--fg); font-weight: 500; }
-.info-box a { color: #d9a441; text-decoration: underline; text-underline-offset: 2px; }
+.info-box a { color: #d9a441; text-decoration: none; text-underline-offset: 2px; }
 .info-box a:hover { color: var(--fg); }
 .rest { color: var(--dim); }
 .rest p { margin: 0 0 4px; }
-.key-c { color: var(--fg); font-weight: 500; }
+.key-c { color: var(--fg); font-weight: 400; }
 .key-g { color: var(--mid); }
 
 /* the ticket column: warm bar night — same tokens, warm values */
@@ -199,12 +201,14 @@ button.item[aria-pressed="true"] .dot { background: var(--inv-fg); }
 /* one input style for notes and your own idea: filled box, enter icon on the right */
 .field { position: relative; display: block; }
 .panel .log-input {
-  all: unset; box-sizing: border-box; display: block; width: 100%; height: var(--row);
-  padding: 0 32px 0 8px; background: var(--pin-bg); color: var(--fg); font: inherit;
+  all: unset; box-sizing: border-box; display: block; width: 100%; min-height: var(--row);
+  padding: calc((var(--row) - 1.68em) / 2) 32px calc((var(--row) - 1.68em) / 2) 8px;
+  background: var(--pin-bg); color: var(--fg); font: inherit; line-height: 1.68;
+  resize: none; overflow: hidden; white-space: pre-wrap; overflow-wrap: anywhere;
 }
 .panel .log-input::placeholder { color: var(--dim); }
 .panel .log-input:focus, .panel .log-input:focus-visible { outline: none; background: var(--pin-hover); }
-.field .enter { position: absolute; right: 8px; top: 50%; transform: translateY(calc(-50% + 2px)); display: flex; color: #625e57; pointer-events: none; }
+.field .enter { position: absolute; right: 8px; bottom: calc(var(--row) / 2); transform: translateY(calc(50% + 2px)); /* stays on the last line as the box grows */ display: flex; color: #625e57; pointer-events: none; }
 .field:focus-within .enter { color: #77726a; }
 .idea-notes .log-save, .lab .log-save { padding: 0 8px; height: var(--item); line-height: var(--item); color: var(--fg); background: var(--pin-bg); letter-spacing: .08em; font-size: 10.5px; }
 .idea-notes .log-save:hover, .lab .log-save:hover { background: var(--pin-hover); }
@@ -237,7 +241,10 @@ button.item[aria-pressed="true"] .dot { background: var(--inv-fg); }
   .panel-pin::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--pin-line); z-index: 2; pointer-events: none; }
   .pin.idle.panel-pin, .panel-pin .pin-name { padding-inline: 8px; }
   button.info { width: 32px; height: 32px; font-size: 15px; right: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
-  .info-box { left: 8px; right: 8px; top: 8px; bottom: calc(52px + env(safe-area-inset-bottom, 0px)); width: auto; max-height: none; transform: none; font-size: 17px; }
+  .info-box { left: 8px; right: 8px; top: 8px; bottom: calc(48px + env(safe-area-inset-bottom, 0px)); width: auto; max-height: none; transform: none; padding: 8px; font-size: 17px; }
+  .info-box .info-x { width: 32px; height: 32px; }
+  .info-box .info-x svg { width: 13px; height: 13px; }
+  .info-box .info-title { padding-right: 40px; }
 }
 
 /* tickets */
