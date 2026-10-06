@@ -149,7 +149,7 @@ button.info:focus-visible { outline: 1px solid var(--fg); outline-offset: 2px; }
   color-scheme: dark;
 }
 .panel { padding: 0 16px 32px; background: var(--bg); color: var(--fg); scrollbar-color: var(--faint) transparent; }
-.panel-pin { margin: 0 -16px 22px; }
+.panel-pin { margin: 0 -16px 8px; } /* same gap under the bar as the flavor columns */
 .pin.idle.panel-pin { padding: 0 16px; }
 .panel-pin .pin-name { padding-left: 16px; }
 .panel-pin i { font-style: normal; opacity: .45; white-space: pre; }
@@ -160,7 +160,7 @@ button.info:focus-visible { outline: 1px solid var(--fg); outline-offset: 2px; }
 .sec { margin-bottom: 24px; }
 .sec h2 {
   margin: 0 0 7px;
-  font: 500 10.5px/1.6 var(--mono);
+  font: 500 10.5px/1.68 var(--mono);
   letter-spacing: .08em;
   color: var(--dim);
 }
