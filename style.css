@@ -13,7 +13,7 @@
   --pin-hover: #454543;
   --row: 27px;
   --item: 22px;
-  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --col: 250px;
   color-scheme: dark;
 }
@@ -125,6 +125,8 @@ button.info:focus-visible { outline: 1px solid var(--fg); outline-offset: 2px; }
 .info-box p { margin: 0 0 8px; }
 .info-box p:last-child { margin-bottom: 0; }
 .info-box .info-title { color: var(--fg); font-weight: 500; }
+.info-box a { color: #d9a441; text-decoration: underline; text-underline-offset: 2px; }
+.info-box a:hover { color: var(--fg); }
 .rest { color: var(--dim); }
 .rest p { margin: 0 0 4px; }
 .key-c { color: var(--fg); font-weight: 500; }
@@ -231,10 +233,17 @@ button.item[aria-pressed="true"] .dot { background: var(--inv-fg); }
 /* tickets */
 .idea { display: grid; gap: 2px; padding: 11px 0; border-bottom: 1px dashed var(--dash); }
 .sec .idea:first-of-type { border-top: 1px dashed var(--dash); }
-.idea-head { display: flex; align-items: flex-start; gap: 12px; }
-.idea .no { flex: 0 0 22px; color: var(--amber); font-variant-numeric: tabular-nums; }
-.idea-chain { flex: 1; min-width: 0; color: var(--chain); }
-.idea-meta { padding-left: 34px; display: grid; gap: 2px; }
+/* ticket: number with its save button on the left, the drink on the right */
+.idea { grid-template-columns: 40px minmax(0, 1fr); column-gap: 12px; }
+.idea-side { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+.idea .no { color: var(--amber); font-variant-numeric: tabular-nums; }
+.idea-main { min-width: 0; display: grid; gap: 2px; }
+.idea-chain { min-width: 0; color: var(--chain); }
+.idea-meta { display: grid; gap: 2px; }
+.save-btn { all: unset; cursor: pointer; font-size: 10.5px; letter-spacing: .08em; line-height: 1.6; color: var(--dim); }
+.save-btn:hover { color: var(--fg); }
+.save-btn.on { color: var(--amber); }
+.save-btn:focus-visible { outline: 1px solid var(--fg); outline-offset: 2px; }
 .save-mark.on { color: var(--amber) !important; }
 .panel .add { all: unset; cursor: pointer; color: var(--dim); }
 .panel .add:hover { color: var(--fg); }

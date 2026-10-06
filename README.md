@@ -21,7 +21,7 @@ A cascading flavor-pairing explorer for cocktails. Pick a flavor, then a pairing
 | `js/notes.js` | Saving, notes, your own ideas, and storage |
 | `favicon.svg`, `preview.png` | Browser-tab icon and link-preview image |
 
-No build step and no dependencies. The only external request is the IBM Plex Mono font from Google Fonts.
+No build step and no dependencies. The only external request is the JetBrains Mono font from Google Fonts.
 
 ## Run it locally
 

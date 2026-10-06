@@ -61,6 +61,13 @@ function saveMark(g, attrs) {
   return `<button type="button" class="save-mark${on ? " on" : ""}" ${attrs} aria-pressed="${on}" ` +
     `title="${locked ? "Saved. Delete its notes to unsave." : on ? "Unsave" : "Save this drink"}">${on ? "●" : "○"}</button>`;
 }
+// labelled save button that sits under the idea number
+function saveBtn(g, attrs) {
+  const on = !!g;
+  const locked = on && g.notes.length > 0;
+  return `<button type="button" class="save-btn${on ? " on" : ""}" ${attrs} aria-pressed="${on}" ` +
+    `title="${locked ? "Saved. Delete its notes to unsave." : on ? "Unsave" : "Save this drink"}">${on ? "saved" : "save"}</button>`;
+}
 function notesList(g) {
   return (g ? g.notes : []).map(e =>
     `<div class="log-row log-entry"><span class="log-note">${esc(e.note)}<span class="log-date"> · ${esc(fmtDate(e.createdAt))}</span></span>` +
@@ -71,7 +78,9 @@ function ideaHTML(k, idea) {
   const g = LAB.ready ? LAB.byKey[groupKey(LAB.picks, idea.chain)] : null;
   const open = LAB.noteOpen === k;
   return `<div class="idea">
-    <div class="idea-head"><span class="no">${String(k + 1).padStart(2, "0")}</span><div class="idea-chain">${esc(idea.chain)}</div>${LAB.ready ? saveMark(g, `data-savek="${k}"`) : ""}</div>
+    <div class="idea-side"><span class="no">${String(k + 1).padStart(2, "0")}</span>${LAB.ready ? saveBtn(g, `data-savek="${k}"`) : ""}</div>
+    <div class="idea-main">
+    <div class="idea-chain">${esc(idea.chain)}</div>
     <div class="idea-meta">
       ${idea.garnish ? `<span class="garn">G: ${esc(idea.garnish)}</span>` : ""}
       ${LAB.ready ? `<div class="idea-notes">
@@ -81,6 +90,7 @@ function ideaHTML(k, idea) {
           : `<button type="button" class="add" data-open="${k}">+ note</button>`}
         ${LAB.status[k] ? `<span class="why">${esc(LAB.status[k])}</span>` : ""}
       </div>` : ""}
+    </div>
     </div>
   </div>`;
 }

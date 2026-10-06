@@ -499,12 +499,11 @@ const infoBtn = document.getElementById("info");
 const infoBox = document.getElementById("info-box");
 infoBox.innerHTML = `
   <p class="info-title">Flavor Mixer</p>
-  <p>${FLAVORS.length} flavors in ${CATS.length} families · ${PAIR_COUNT.toLocaleString("en")} flavor pairings</p>
-  <p><span class="key-c">Bright</span> = classic pairing<br><span class="key-g">Dim</span> = works well<br><span class="key-m">Dimmer</span> = possible, inferred from the classics</p>
-  <p>Pick a flavor, then a pairing, then optionally a third. Pairing notes and cocktail ideas appear in the last column.</p>
-  <p>○ saves an idea. Writing a note under it saves it too. “+ your own idea” adds a drink of your own.</p><p>Click the top of any column to search it, by flavor or by family.</p>
-  <p><span class="key-c">▪</span> next to a flavor = it's in something you saved with your current picks.</p>
-  <p>Esc clears everything.</p>`;
+  <p>Make 5000+ pairings from 400+ flavors across 20 families.</p>
+  <p><span class="key-c">Bright</span> flavors indicate classic pairings. <span class="key-g">Dim</span> ones work okay. <span class="key-m">Dimmer</span> ones are a maybe.</p>
+  <p>Flavors appearing in ‘saved’ ideas will be marked with a <span class="key-c">▪</span></p>
+  <p>Click the top of any column to search it, by flavor or by family.</p>
+  <p>A <a href="https://ravipopat.info/maybe-machines" target="_blank" rel="noopener">maybe machine</a> by <a href="https://ravipopat.info" target="_blank" rel="noopener">Ravi Popat</a>.</p>`;
 function setInfo(open) { infoBox.hidden = !open; infoBtn.setAttribute("aria-expanded", String(open)); }
 infoBtn.addEventListener("click", e => { e.stopPropagation(); setInfo(infoBox.hidden); });
 document.addEventListener("click", e => { if (!infoBox.hidden && !infoBox.contains(e.target)) setInfo(false); });
