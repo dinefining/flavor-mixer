@@ -498,6 +498,7 @@ const PAIR_COUNT = FLAVORS.reduce((a, n) => a + FLAVORS.filter(m => edge(n, m) >
 const infoBtn = document.getElementById("info");
 const infoBox = document.getElementById("info-box");
 infoBox.innerHTML = `
+  <button type="button" class="info-x" aria-label="Close">${X_SVG}</button>
   <p class="info-title">Flavor Mixer</p>
   <p>Make 5000+ pairings from 400+ flavors across 20 families.</p>
   <p><span class="key-c">Bright</span> flavors indicate classic pairings. <span class="key-g">Dim</span> ones work okay. <span class="key-m">Dimmer</span> ones are a maybe.</p>
@@ -505,6 +506,7 @@ infoBox.innerHTML = `
   <p>Click the top of any column to search it, by flavor or by family.</p>
   <p>A <a href="https://ravipopat.info/maybe-machines" target="_blank" rel="noopener">maybe machine</a> by <a href="https://ravipopat.info" target="_blank" rel="noopener">Ravi Popat</a>.</p>`;
 function setInfo(open) { infoBox.hidden = !open; infoBtn.setAttribute("aria-expanded", String(open)); }
+infoBox.querySelector(".info-x").addEventListener("click", e => { e.stopPropagation(); setInfo(false); infoBtn.focus(); });
 infoBtn.addEventListener("click", e => { e.stopPropagation(); setInfo(infoBox.hidden); });
 document.addEventListener("click", e => { if (!infoBox.hidden && !infoBox.contains(e.target)) setInfo(false); });
 document.addEventListener("keydown", e => {
