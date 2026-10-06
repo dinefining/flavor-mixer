@@ -39,6 +39,8 @@ body {
   scrollbar-color: var(--faint) transparent;
 }
 .col { border-right: 1px solid var(--rule); padding-top: 0; }
+/* the line beside the ticket column uses the ticket column's own border colour */
+.col:nth-child(3) { border-right-color: #3d3326; }
 .pin {
   position: sticky; top: 0; z-index: 1;
   display: flex; align-items: stretch;
@@ -155,7 +157,7 @@ button.info:focus-visible { outline: 1px solid var(--fg); outline-offset: 2px; }
 .pin .run .chain { text-overflow: clip; animation: pin-slide var(--dur, 3s) ease-in-out .3s infinite alternate; }
 @keyframes pin-slide { 0%, 15% { text-indent: 0; } 85%, 100% { text-indent: var(--shift, 0); } }
 @media (prefers-reduced-motion: reduce) { .pin .run .chain { animation: none; text-overflow: ellipsis; } }
-.sec { margin-bottom: 24px; max-width: 72ch; }
+.sec { margin-bottom: 24px; }
 .sec h2 {
   margin: 0 0 7px;
   font: 500 10.5px/1.6 var(--mono);
@@ -182,12 +184,16 @@ button.item[aria-pressed="true"] .dot { background: var(--inv-fg); }
 .idea-notes button, .lab button { all: unset; cursor: pointer; }
 .idea-notes button:focus-visible, .lab button:focus-visible { outline: 1px solid var(--fg); outline-offset: 2px; }
 .lab .log-form { display: grid; gap: 8px; padding: 8px 0 14px; border-bottom: 1px solid var(--rule); }
-.idea-notes .log-input, .lab .log-input {
-  all: unset; box-sizing: border-box; width: 100%; height: var(--row);
-  padding: 0 8px; background: var(--pin-bg); color: var(--fg); font: inherit;
+/* one input style for notes and your own idea: filled box, enter icon on the right */
+.field { position: relative; display: block; }
+.panel .log-input {
+  all: unset; box-sizing: border-box; display: block; width: 100%; height: var(--row);
+  padding: 0 32px 0 8px; background: var(--pin-bg); color: var(--fg); font: inherit;
 }
-.idea-notes .log-input::placeholder, .lab .log-input::placeholder { color: var(--dim); }
-.idea-notes .log-input:focus-visible, .lab .log-input:focus-visible { outline: 1px solid var(--dim); }
+.panel .log-input::placeholder { color: var(--dim); }
+.panel .log-input:focus, .panel .log-input:focus-visible { outline: none; background: var(--pin-hover); }
+.field .enter { position: absolute; right: 8px; top: 50%; transform: translateY(calc(-50% + 2px)); display: flex; color: #625e57; pointer-events: none; }
+.field:focus-within .enter { color: #77726a; }
 .idea-notes .log-save, .lab .log-save { padding: 0 8px; height: var(--item); line-height: var(--item); color: var(--fg); background: var(--pin-bg); letter-spacing: .08em; font-size: 10.5px; }
 .idea-notes .log-save:hover, .lab .log-save:hover { background: var(--pin-hover); }
 .idea-notes .log-save[disabled], .lab .log-save[disabled] { color: var(--dim); cursor: default; }
@@ -205,15 +211,19 @@ button.item[aria-pressed="true"] .dot { background: var(--inv-fg); }
   body { overflow: auto; }
   .app {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-rows: 58vh auto;
+    grid-template-rows: 58vh 1fr;
     height: auto;
+    min-height: 100%; /* the ticket column fills to the bottom of the screen */
   }
   .col:nth-child(3) { border-right: 0; }
   /* one 8px gutter for every column on phones, the ticket column included */
-  .panel { grid-column: 1 / -1; border-top: 1px solid var(--rule); padding-inline: 8px; }
+  .panel { grid-column: 1 / -1; padding-inline: 8px; }
   button.item, .cat, .empty, .pin.idle { padding-inline: 8px; }
   .pin .pin-name, .pin .pin-search { padding-inline: 8px; }
   .panel-pin { margin-inline: -8px; }
+  /* top hairline matches the bar's bottom hairline: same 1px, same colour */
+  .panel-pin::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--pin-line); z-index: 2; pointer-events: none; }
+  .pin.idle.panel-pin::before { background: var(--rule); }
   .pin.idle.panel-pin, .panel-pin .pin-name { padding-inline: 8px; }
   button.info { width: 32px; height: 32px; font-size: 15px; right: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
   .info-box { left: 8px; right: 8px; width: auto; max-height: calc(100vh - 72px); overflow-y: auto; bottom: calc(48px + env(safe-area-inset-bottom, 0px)); }
@@ -231,8 +241,6 @@ button.item[aria-pressed="true"] .dot { background: var(--inv-fg); }
 .panel .add:hover { color: var(--fg); }
 .panel .add:focus-visible { outline: 1px solid var(--fg); outline-offset: 2px; }
 .own-row { padding-top: 10px; }
-.own-row .log-input { all: unset; box-sizing: border-box; display: block; width: 100%; height: var(--row); padding: 0 8px; font: inherit; color: var(--fg); background: var(--pin-bg); }
-.own-row .log-input::placeholder { color: var(--dim); }
 .idea-notes { display: grid; gap: 4px; margin-top: 4px; }
 .panel h2 { color: var(--dim); }
 .panel .sec p { color: var(--fg); }

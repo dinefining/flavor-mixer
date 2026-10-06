@@ -77,7 +77,7 @@ function ideaHTML(k, idea) {
       ${LAB.ready ? `<div class="idea-notes">
         ${notesList(g)}
         ${open
-          ? `<input id="lab-note-${k}" data-k="${k}" class="log-input" type="text" maxlength="280" placeholder="${LAB.saving[k] ? "saving…" : "note ↵"}" value="${esc(LAB.drafts[k] || "")}">`
+          ? `<span class="field"><input id="lab-note-${k}" data-k="${k}" class="log-input" type="text" maxlength="280" placeholder="${LAB.saving[k] ? "saving…" : "note"}" value="${esc(LAB.drafts[k] || "")}"><span class="enter" aria-hidden="true"><svg viewBox="0 0 16 16" width="15" height="15"><path d="M13 3v5.5H3.5M6.5 5.5l-3 3 3 3" fill="none" stroke="currentColor" stroke-width=".75" stroke-linecap="square"/></svg></span></span>`
           : `<button type="button" class="add" data-open="${k}">+ note</button>`}
         ${LAB.status[k] ? `<span class="why">${esc(LAB.status[k])}</span>` : ""}
       </div>` : ""}
@@ -98,7 +98,7 @@ function groupHTML(g, withCombo) {
 function ownIdeaRow() {
   if (!LAB.ready) return "";
   return `<div class="own-row">${LAB.ownOpen
-    ? `<input id="lab-own" class="log-input" type="text" maxlength="200" placeholder="your own idea ↵" value="${esc(LAB.own || "")}">`
+    ? `<span class="field"><input id="lab-own" class="log-input" type="text" maxlength="200" placeholder="your own idea" value="${esc(LAB.own || "")}"><span class="enter" aria-hidden="true"><svg viewBox="0 0 16 16" width="15" height="15"><path d="M13 3v5.5H3.5M6.5 5.5l-3 3 3 3" fill="none" stroke="currentColor" stroke-width=".75" stroke-linecap="square"/></svg></span></span>`
     : `<button type="button" class="add" data-own="1">+ your own idea</button>`}</div>`;
 }
 async function saveOwn() {
