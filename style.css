@@ -75,10 +75,10 @@ body {
 .pin .pin-x svg { width: 11px; height: 11px; display: block; }
 .pin .pin-x:hover { background: var(--pin-hover); }
 .pin button:focus-visible { outline: 1px solid var(--fg); outline-offset: -3px; }
-.col[data-active="false"] { opacity: .35; pointer-events: none; }
+.col[data-active="false"] { pointer-events: none; } /* empty until the previous column has a pick; borders stay full strength */
 .cat {
   padding: 16px 16px 4px;
-  color: var(--dim);
+  color: #d9a441; /* same amber as the idea numbers */
   letter-spacing: .08em;
   font-size: 10.5px;
   user-select: none;
@@ -120,7 +120,7 @@ button.info:focus-visible { outline: 1px solid var(--fg); outline-offset: 2px; }
 .info-box {
   position: fixed; z-index: 3; right: 16px; bottom: calc(50px + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box; width: min(320px, calc(100vw - 32px)); padding: 12px 14px;
-  background: var(--bg); border: 1px solid var(--faint); color: var(--dim);
+  background: #0a0a0a; border: 1px solid var(--faint); color: var(--dim);
 }
 .info-box p { margin: 0 0 8px; }
 .info-box p:last-child { margin-bottom: 0; }
@@ -150,7 +150,7 @@ button.info:focus-visible { outline: 1px solid var(--fg); outline-offset: 2px; }
 }
 .panel { padding: 0 16px 32px; background: var(--bg); color: var(--fg); scrollbar-color: var(--faint) transparent; }
 .panel-pin { margin: 0 -16px 8px; } /* same gap under the bar as the flavor columns */
-.pin.idle.panel-pin { padding: 0 16px; }
+.pin.idle.panel-pin { padding: 0 16px; background: var(--pin-bg); box-shadow: 0 1px 0 var(--pin-line); } /* output header bar looks the same before and after a pick */
 .panel-pin .pin-name { padding-left: 16px; }
 .panel-pin i { font-style: normal; opacity: .45; white-space: pre; }
 .pin .chain { display: block; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -223,7 +223,6 @@ button.item[aria-pressed="true"] .dot { background: var(--inv-fg); }
   .panel-pin { margin-inline: -8px; }
   /* top hairline matches the bar's bottom hairline: same 1px, same colour */
   .panel-pin::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--pin-line); z-index: 2; pointer-events: none; }
-  .pin.idle.panel-pin::before { background: var(--rule); }
   .pin.idle.panel-pin, .panel-pin .pin-name { padding-inline: 8px; }
   button.info { width: 32px; height: 32px; font-size: 15px; right: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
   .info-box { left: 8px; right: 8px; width: auto; max-height: calc(100vh - 72px); overflow-y: auto; bottom: calc(48px + env(safe-area-inset-bottom, 0px)); }
