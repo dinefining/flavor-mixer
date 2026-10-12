@@ -506,7 +506,7 @@ infoBox.innerHTML = `
   <p><span class="key-c">Bright</span> flavors indicate classic pairings. <span class="key-g">Dim</span> ones work okay. <span class="key-m">Dimmer</span> ones are a maybe.</p>
   <p>Flavors appearing in ‘saved’ ideas will be marked with a <span class="key-c">▪</span></p>
   <p>Click the top of any column to search it, by flavor or by family.</p>
-  <p>A <a href="https://ravipopat.info/maybe-machines" target="_blank" rel="noopener">maybe machine</a> by <a href="https://ravipopat.info" target="_blank" rel="noopener">Ravi Popat</a>.</p>`;
+  <p>A <a href="https://maybemachines.com" target="_blank" rel="noopener">maybe machine</a> by <a href="https://ravipopat.info" target="_blank" rel="noopener">Ravi Popat</a>.</p>`;
 // on phones the box has a fixed height, so the text grows until it fills it
 function fitInfo() {
   if (infoBox.hidden) return;
